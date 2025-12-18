@@ -1,6 +1,5 @@
 using System.Data;
 using DbUp;
-using System.Reflection;
 using Microsoft.Data.SqlClient;
 using Serilog;
 using SoleraTechAssessment.Data.DataAccess.Repositories;
@@ -16,8 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Use Serilog as the logging provider
 builder.Host.UseSerilog();
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
@@ -28,13 +25,20 @@ builder.Services.AddTransient<IDbConnection>(_ => new SqlConnection(connectionSt
 builder.Services.AddScoped<CarDataRepository>();
 builder.Services.AddScoped<CarDataService>();
 
+var corsPolicy = "DemoReactAppCorsPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsPolicy,
+        policy => policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 EnsureDatabase.For.SqlDatabase(connectionString);
 
 var upgrader = DeployChanges.To
     .SqlDatabase(connectionString)
-    .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+    .WithScriptsEmbeddedInAssembly(typeof(CarDataRepository).Assembly)
     .LogToConsole()
     .Build();
 
@@ -52,6 +56,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseCors(corsPolicy);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
