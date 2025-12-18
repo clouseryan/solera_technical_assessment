@@ -1,0 +1,4 @@
+-- This folder contains SQL migration scripts for DbUp
+-- Name your scripts with a prefix to ensure correct ordering, e.g.:
+-- 001_CreateUsersTable.sql
+-- 002_AddEmailColumn.sql

@@ -24,3 +24,4 @@ Routing is handled by `react-router-dom`.
 - When adding new pages, ensure they are added as routes within the `AppLayout` in `App.tsx`.
 - When creating new components, **prefer using Material UI components**.
 - Maintain the Sidebar/Header navigation structure using MUI patterns.
+- Use Redux Toolkit for state management unless otherwise specified.
