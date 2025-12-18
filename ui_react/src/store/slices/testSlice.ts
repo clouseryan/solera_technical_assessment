@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { env } from '../../config/env';
-
-export interface WeatherForecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary?: string;
-}
+import type { WeatherForecast } from '@/models/weather-forecast.model';
 
 interface TestState {
     weather: WeatherForecast[];
